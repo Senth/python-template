@@ -1,0 +1,11 @@
+{
+  "project_name": "Python Project name",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-')}}",
+  "module_name": "{{ cookiecutter.project_slug.replace('-', '')}}",
+  "project_description": "short description",
+  "version": "0.0.1",
+  "full_name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "github_username": "janedoe",
+  "_extensions": ["jinja_time.TimeExtensions"]
+}

@@ -1,2 +1,3 @@
-# python-template
-Python template for new projects
+# Python Template
+
+Simple minimal template for new python CLI projects
