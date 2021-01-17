@@ -126,6 +126,7 @@ class Config:
             log_dir = path.join(gettempdir(), _app_name)
             makedirs(log_dir, exist_ok=True)
         else:
+            # TODO create dir, or log in a home directory
             log_dir = f"/var/log/{_app_name}/"
         log_location = path.join(log_dir, f"{_app_name}.log")
 
@@ -134,7 +135,7 @@ class Config:
         elif self.verbose:
             log_level = logging.INFO
         else:
-            log_level = logging.WARNING
+            log_level = logging.INFO
 
         # Set logging rotation
         timed_rotating_handler = logging.handlers.TimedRotatingFileHandler(
@@ -143,7 +144,8 @@ class Config:
         timed_rotating_handler.setLevel(log_level)
         timed_rotating_handler.setFormatter(
             logging.Formatter(
-                "%(asctime)s:%(levelname)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+                "\033[1m%(asctime)s:%(levelname)s:\033[0m %(message)s",
+                datefmt="%Y-%m-%d %H:%M:%S",
             )
         )
 
