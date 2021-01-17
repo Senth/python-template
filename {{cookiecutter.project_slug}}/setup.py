@@ -9,7 +9,7 @@ project_slug = "{{cookiecutter.project_slug}}"
 setup(
     name=project_slug,
     version="{{cookiecutter.version}}",
-    url="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}",
+    url=f"https://github.com/{{cookiecutter.github_username}}/{project_slug}",
     license="MIT",
     author="{{cookiecutter.full_name}}",
     author_email="{{cookiecutter.email}}",
