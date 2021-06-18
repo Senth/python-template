@@ -1,16 +1,15 @@
-from os import path, makedirs
-from platform import system
-from tempfile import gettempdir
-from typing import Any, Union
-import sys
-import site
-import importlib.util
 import importlib.machinery
-import argparse
-import logging
-import logging.handlers
+import importlib.util
+import site
+import sys
+from os import path
+from typing import Any
+
+from .utils.arg_parser import get_args
 
 _app_name = "{{cookiecutter.project_slug}}"
+
+{%- if cookiecutter.external_config == "y" -%}
 _config_dir = path.join("config", _app_name)
 _config_file = path.join(_config_dir, "config.py")
 _example_file = path.join(_config_dir, "config.example.py")
@@ -28,9 +27,7 @@ else:
     _sys_config_example = path.join(sys.prefix, _example_file)
     _user_config_example = path.join(site.getuserbase(), _example_file)
     if not path.exists(_sys_config_example) and not path.exists(_user_config_example):
-        print(
-            f"Error: no configuration found. It should be here: '{_user_config_file}'"
-        )
+        print(f"Error: no configuration found. It should be here: '{_user_config_file}'")
         print("run: locate " + _example_file)
         print("This should help you find the current config location.")
         print(
@@ -39,12 +36,8 @@ else:
         sys.exit(1)
 
     print("This seems like it's the first time you run this program.")
-    print(
-        f"For this program to work properly you have to configure it by editing '{_user_config_file}'"
-    )
-    print(
-        "In the same folder there's an example file 'config.example.py' you can copy to 'config.py'."
-    )
+    print(f"For this program to work properly you have to configure it by editing '{_user_config_file}'")
+    print("In the same folder there's an example file 'config.example.py' you can copy to 'config.py'.")
     sys.exit(0)
 
 # Import config
@@ -58,7 +51,7 @@ def _print_missing(variable_name):
     print(f"Missing {variable_name} variable in config file: {_user_config_file}")
     print("Please add it to you config.py again to continue")
     sys.exit(1)
-
+{%- endif -%}
 
 class Config:
     def __init__(self, user_config):
@@ -66,33 +59,14 @@ class Config:
 
         # Default values
         self.app_name: str = _app_name
-        self.logger: logging.Logger
         self.debug: bool
         self.verbose: bool
 
+{%- if cookiecutter.external_config == "y" -%}
         self._get_optional_variables()
         self._check_required_variables()
-        self._parse_args()
-        self._init_logger()
-
-    def _parse_args(self):
-        """Parse arguments from command line"""
-        parser = argparse.ArgumentParser()
-
-        parser.add_argument(
-            "-v",
-            "--verbose",
-            action="store_true",
-            help="Prints out helpful messages.",
-        )
-        parser.add_argument(
-            "--debug",
-            action="store_true",
-            help="Turn on debug messages. This automatically turns on --verbose as well.",
-        )
-
-        _args = parser.parse_args()
-        self._add_args_settings(_args)
+{%- endif -%}
+        self._add_args_settings()
 
     def _add_args_settings(self, args):
         """Set additional configuration from script arguments
@@ -100,12 +74,14 @@ class Config:
         Args:
             args (list): All the parsed arguments
         """
+        args = get_args()
         self.verbose = args.verbose
         self.debug = args.debug
 
         if args.debug:
             self.verbose = True
 
+{%- if cookiecutter.external_config == "y" -%}
     def _get_optional_variables(self):
         """Get optional values from the config file"""
         # try:
@@ -119,45 +95,6 @@ class Config:
         #     self.port = _user_config.PORT
         # except AttributeError:
         #     _print_missing("PORT")
+{%- endif -%}
 
-    def _init_logger(self):
-        os = system()
-        if os == "Windows":
-            log_dir = path.join(gettempdir(), _app_name)
-            makedirs(log_dir, exist_ok=True)
-        else:
-            # TODO create dir, or log in a home directory
-            log_dir = f"/var/log/{_app_name}/"
-        log_location = path.join(log_dir, f"{_app_name}.log")
-
-        if self.debug:
-            log_level = logging.DEBUG
-        elif self.verbose:
-            log_level = logging.INFO
-        else:
-            log_level = logging.INFO
-
-        # Set logging rotation
-        timed_rotating_handler = logging.handlers.TimedRotatingFileHandler(
-            log_location, when="midnight"
-        )
-        timed_rotating_handler.setLevel(log_level)
-        timed_rotating_handler.setFormatter(
-            logging.Formatter(
-                "\033[1m%(asctime)s:%(levelname)s:\033[0m %(message)s",
-                datefmt="%Y-%m-%d %H:%M:%S",
-            )
-        )
-
-        # Stream output
-        stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setLevel(log_level)
-
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(log_level)
-        self.logger.addHandler(timed_rotating_handler)
-        self.logger.addHandler(stream_handler)
-
-
-global config
 config = Config(_user_config)
