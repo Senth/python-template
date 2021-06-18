@@ -3,9 +3,9 @@
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-')}}",
   "module_name": "{{ cookiecutter.project_slug.replace('-', '')}}",
   "project_description": "short description",
-  "version": "0.0.1",
   "full_name": "Jane Doe",
   "email": "jane.doe@example.com",
   "github_username": "janedoe",
+  "external_config": ["y", "n"],
   "_extensions": ["jinja2_time.TimeExtension"]
 }
