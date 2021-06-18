@@ -1,4 +1,5 @@
 # This workflow will install Python dependencies and run tests with a variety of Python versions
+{% raw %}
 
 name: Tests
 
@@ -31,3 +32,4 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+{% endraw %}
