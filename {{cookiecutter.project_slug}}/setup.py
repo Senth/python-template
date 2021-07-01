@@ -25,7 +25,7 @@ setup(
     install_requires=[],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
-        "Licence :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
