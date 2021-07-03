@@ -7,5 +7,6 @@
   "email": "jane.doe@example.com",
   "github_username": "janedoe",
   "external_config": ["y", "n"],
+  "library": ["y", "n"],
   "_extensions": ["jinja2_time.TimeExtension"]
 }

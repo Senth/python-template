@@ -17,14 +17,29 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
+{%- if cookiecutter.library == 'n' -%}
     entry_points={"console_scripts": [f"{project_slug}={module_name}.__main__:main"]},
+{%- endif -%}
 {%- if cookiecutter.external_config == "y" -%}
     include_package_data=True,
-    data_files=[(f"config/{project_slug}", ["config/config.example.py"])],
+    data_files=[(f"config", [f"config.{project_slug}.cfg"])],
 {%- endif -%}
-    install_requires=[],
+    install_requires=[
+{%- if cookiecutter.library == 'n' -%}
+        "tealprint",
+{%- endif -%}
+{%- if cookiecutter.external_config == "y" -%}
+        "configparser",
+{%- endif -%}
+    ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
+{%- if cookiecutter.library == 'y' -%}
+        "Topic :: Software Development :: Libraries"
+{%- endif -%}
+{%- if cookiecutter.library == 'n' -%}
+        "Environment :: Console"
+{%- endif -%}
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
