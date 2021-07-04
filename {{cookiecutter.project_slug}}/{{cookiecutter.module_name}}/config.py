@@ -1,5 +1,4 @@
 
-from .utils.arg_parser import get_args
 from .utils.config_file_args import ConfigFileArgs
 
 _app_name = "{{cookiecutter.project_slug}}"
@@ -12,13 +11,12 @@ class Config:
         self.debug: bool = False
         self.verbose: bool = False
 
-    def _add_args_settings(self, args):
+    def set_from_cli(self, args):
         """Set additional configuration from script arguments
 
         Args:
             args (list): All the parsed arguments
         """
-        args = get_args()
         self.verbose = args.verbose
         self.debug = args.debug
 
