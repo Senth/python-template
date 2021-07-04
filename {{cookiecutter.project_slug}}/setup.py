@@ -35,10 +35,10 @@ setup(
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
 {%- if cookiecutter.library == 'y' -%}
-        "Topic :: Software Development :: Libraries"
+        "Topic :: Software Development :: Libraries",
 {%- endif -%}
 {%- if cookiecutter.library == 'n' -%}
-        "Environment :: Console"
+        "Environment :: Console",
 {%- endif -%}
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.8",
