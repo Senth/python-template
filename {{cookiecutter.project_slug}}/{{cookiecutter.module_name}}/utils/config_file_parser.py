@@ -29,9 +29,8 @@ class ConfigFileParser:
 
     @staticmethod
     def _read_from_config(config: configparser.SectionProxy, varname: str) -> Any:
+        varname = varname.lower()
         if varname in config:
-            return config[varname]
-        if varname.lower() in config:
             return config[varname]
         return None
 
