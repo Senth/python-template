@@ -1,3 +1,4 @@
+from tealprint import TealLevel
 
 from .utils.config_file_args import ConfigFileArgs
 
@@ -8,8 +9,7 @@ class Config:
     def __init__(self):
         # Default values
         self.app_name: str = _app_name
-        self.debug: bool = False
-        self.verbose: bool = False
+        self.level = TealLevel.info
 
     def set_from_cli(self, args):
         """Set additional configuration from script arguments
@@ -17,11 +17,10 @@ class Config:
         Args:
             args (list): All the parsed arguments
         """
-        self.verbose = args.verbose
-        self.debug = args.debug
-
         if args.debug:
-            self.verbose = True
+            self.level = TealLevel.debug
+        elif args.verbose:
+            self.level = TealLevel.verbose
 
 {%- if cookiecutter.external_config == "y" -%}
     def set_from_config_file(self, args: ConfigFileArgs) -> None:
