@@ -22,17 +22,27 @@ class ConfigFileParser:
         config.read(self.path)
 
         # TODO add configuration variables
-        # if "General" in config:
-        #     args.port = ConfigFileParser._read_from_config(config["General"], "Port")
+        # if "general" in config:
+        #     general = config["general"]
+        #     ConfigFileParser._set_str(args, general, "port")
 
         return args
 
     @staticmethod
-    def _read_from_config(config: configparser.SectionProxy, varname: str) -> Any:
-        varname = varname.lower()
-        if varname in config:
-            return config[varname]
-        return None
+    def _set_str(args: Any, section: configparser.SectionProxy, *varnames: str) -> None:
+        for varname in varnames:
+            default = getattr(args, varname)
+            value = section.get(varname, fallback=default)
+            setattr(args, varname, value)
+
+    @staticmethod
+    def _set_str_list(args: Any, section: configparser.SectionProxy, *varnames: str) -> None:
+        for varname in varnames:
+            values = getattr(args, varname)
+            value = section.get(varname, fallback="")
+            if value != "":
+                values = value.split("\n")
+            setattr(args, varname, values)
 
     def create_if_not_exists(self) -> None:
         if self.path.exists():
