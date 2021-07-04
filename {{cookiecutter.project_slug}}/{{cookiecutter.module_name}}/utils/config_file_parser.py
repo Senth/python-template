@@ -10,8 +10,7 @@ from .config_file_args import ConfigFileArgs
 
 class ConfigFileParser:
     def __init__(self) -> None:
-        self.filename = f".{config.app_name}.cfg"
-        self.path = Path.home().joinpath(self.filename)
+        self.path = Path.home().joinpath(f".{config.app_name}.cfg")
 
     def get_args(self) -> ConfigFileArgs:
         args = ConfigFileArgs()
@@ -41,9 +40,10 @@ class ConfigFileParser:
             return
 
         # Copy file from config location to home
-        original = Path(getuserbase()).joinpath("config", self.filename)
+        example_name = f"{config.app_name}-example.cfg"
+        example_path = Path(getuserbase()).joinpath("config", example_name)
 
-        if not original.exists():
+        if not example_path.exists():
             return
 
-        copy(original, self.path)
+        copy(example_path, self.path)

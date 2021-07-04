@@ -22,7 +22,7 @@ setup(
 {%- endif -%}
 {%- if cookiecutter.external_config == "y" -%}
     include_package_data=True,
-    data_files=[(f"config", [f"config.{project_slug}.cfg"])],
+    data_files=[(f"config", [f"config/{project_slug}-example.cfg"])],
 {%- endif -%}
     install_requires=[
 {%- if cookiecutter.library == 'n' -%}
