@@ -29,7 +29,7 @@ setup(
         "tealprint",
 {%- endif -%}
 {%- if cookiecutter.external_config == "y" -%}
-        "configparser",
+        "blulib",
 {%- endif -%}
     ],
     classifiers=[
@@ -43,6 +43,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     python_requires=">=3.8",
 )

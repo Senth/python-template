@@ -1,1 +1,6 @@
-tealprint==0.2.1
+{%- if cookiecutter.library == 'n' -%}
+tealprint
+{%- endif -%}
+{%- if cookiecutter.external_config == "y" -%}
+blulib
+{%- endif -%}
